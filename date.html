@@ -19,22 +19,25 @@
       .then(data => {
         const grid = document.getElementById('date-grid');
 
-        // 날짜 리스트 만들기 (중복 제거 + 정렬)
+        // 날짜 리스트 만들기 (중복 제거 + 최신 순 정렬)
         const dates = [...new Set(data.map(msg => msg.date))].sort().reverse();
 
+        // YYYY-MM-DD → 240801 변환 함수
+        function shortDate(dateStr) {
+          return dateStr.replace(/-/g, '').slice(2); 
+          // → 2024-08-01 → 20240801 → 240801
+        }
+
         dates.forEach(date => {
-
-          // 화면에 보여줄 숫자 형태 변환 → 240801
-          const compact = date.replace(/-/g, "").slice(2);
-
           const card = document.createElement('div');
           card.className = 'date-card';
 
+          // 🔥 날짜 카드 숫자 출력
           card.innerHTML = `
-            <div class="date-text">${compact}</div>
+            <div class="date-text">${shortDate(date)}</div>
           `;
 
-          // 클릭하면 원래 날짜 형식(YYYY-MM-DD)로 이동
+          // 🔥 날짜 클릭 → date-view.html?date=YYYY-MM-DD
           card.onclick = () => {
             window.location.href = `date-view.html?date=${date}`;
           };
