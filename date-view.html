@@ -1,64 +1,49 @@
-<script>
-  /* 날짜 변환 함수 */
-  function formatKoreanDate(dateStr) {
-    const [year, month, day] = dateStr.split("-");
-    const date = new Date(year, month - 1, day);
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>날짜별 보기</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 
-    const dayNames = ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"];
-    const dayName = dayNames[date.getDay()];
+<body>
 
-    return `${year}년 ${Number(month)}월 ${Number(day)}일 ${dayName}`;
-  }
+  <h1 class="title">by date</h1>
 
-  /* URL 날짜 가져오기 */
-  const params = new URLSearchParams(window.location.search);
-  const selectedDate = params.get("date");
+  <div id="date-grid" class="date-grid"></div>
 
-  document.getElementById("date-title").innerText =
-    formatKoreanDate(selectedDate);
+  <script>
+    fetch('messages.json')
+      .then(res => res.json())
+      .then(data => {
+        const grid = document.getElementById('date-grid');
 
-  /* 메시지 불러오기 */
-  fetch("messages.json")   /* ⭐⭐⭐ 여기만 수정됨! ⭐⭐⭐ */
-    .then(res => res.json())
-    .then(data => {
-      const msgBox = document.getElementById("messages");
-      const filtered = data.filter(msg => msg.date === selectedDate);
+        // 날짜 리스트 만들기
+        const dates = [...new Set(data.map(msg => msg.date))].sort().reverse();
 
-      let prevMsg = null;
-
-      filtered.forEach(msg => {
-        const block = document.createElement("div");
-        block.className = "message-block";
-
-        const isContinuous =
-          prevMsg &&
-          prevMsg.time === msg.time;
-
-        /* 첫 메시지 or 시간이 다른 메시지 */
-        if (!isContinuous) {
-          block.innerHTML = `
-            <img class="avatar" src="SANGHA.jpg">
-            <div class="msg-right">
-              <div class="sender-line">
-                <span class="name">SANGHA</span>
-                <span class="time">${msg.time}</span>
-              </div>
-              <div class="bubble">${msg.text.replace(/\n/g, "<br>")}</div>
-            </div>
-          `;
+        // 2024-08-01 → 240801 형식으로 바꾸는 함수
+        function shortDate(dateStr) {
+          return dateStr.replace(/-/g, '').slice(2);
+          // 20240801 → 240801
         }
 
-        /* 연속 메시지 (프사·이름·시간 숨김) */
-        else {
-          block.innerHTML = `
-            <div class="msg-right continuous">
-              <div class="bubble">${msg.text.replace(/\n/g, "<br>")}</div>
-            </div>
-          `;
-        }
+        dates.forEach(date => {
+          const card = document.createElement('div');
+          card.className = 'date-card';
 
-        msgBox.appendChild(block);
-        prevMsg = msg;
+          card.innerHTML = `
+            <div class="date-text">${shortDate(date)}</div>
+          `;
+
+          card.onclick = () => {
+            window.location.href = `date-view.html?date=${date}`;
+          };
+
+          grid.appendChild(card);
+        });
       });
-    });
-</script>
+  </script>
+
+</body>
+</html>
