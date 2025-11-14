@@ -116,6 +116,10 @@ body {
   max-width: 80%;  
 }
 
+.msg-right.continuous {
+  margin-left: 48px; /* 프로필 아이콘만큼 들여쓰기 */
+}
+
 /* 이름 + 시간 POP 스타일 */
 .sender-line {
   display: flex;
