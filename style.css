@@ -68,7 +68,7 @@ body {
 
 /* POP 전체 배경 */
 .pop-bg {
-  background: #d8d7f7;
+  background: #000000;
   min-height: 100vh;
   padding: 25px 18px;
 }
