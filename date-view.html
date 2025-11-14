@@ -18,7 +18,7 @@
     formatKoreanDate(selectedDate);
 
   /* 메시지 불러오기 */
-  fetch("/archive/messages.json")
+  fetch("messages.json")   /* ⭐⭐⭐ 여기만 수정됨! ⭐⭐⭐ */
     .then(res => res.json())
     .then(data => {
       const msgBox = document.getElementById("messages");
