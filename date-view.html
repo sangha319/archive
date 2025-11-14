@@ -1,5 +1,10 @@
-fetch("messages.json")
-  .then(res => res.json())
+fetch("messages.json?v=" + Date.now())  // 🔥 캐시 방지 + 올바른 경로
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("messages.json을 불러올 수 없습니다.");
+    }
+    return res.json();
+  })
   .then(data => {
     const msgBox = document.getElementById("messages");
     const filtered = data.filter(msg => msg.date === selectedDate);
@@ -20,13 +25,13 @@ fetch("messages.json")
               <span class="name">SANGHA</span>
               <span class="time">${msg.time}</span>
             </div>
-            <div class="bubble">${msg.text.replace(/\n/g, "<br>")}</div>
+            <div class="bubble">${msg.text.replace(/\\n/g, "<br>")}</div>
           </div>
         `;
       } else {
         block.innerHTML = `
           <div class="msg-right continuous">
-            <div class="bubble">${msg.text.replace(/\n/g, "<br>")}</div>
+            <div class="bubble">${msg.text.replace(/\\n/g, "<br>")}</div>
           </div>
         `;
       }
@@ -34,4 +39,9 @@ fetch("messages.json")
       msgBox.appendChild(block);
       prevMsg = msg;
     });
+  })
+  .catch(err => {
+    console.error(err);
+    document.getElementById("messages").innerHTML =
+      "<p style='color:white; text-align:center; margin-top:30px;'>메시지를 불러오지 못했습니다.</p>";
   });
