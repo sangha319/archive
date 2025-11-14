@@ -142,16 +142,19 @@ body {
 /* POP 말풍선 */
 .bubble {
   background: #ffffff;
-  padding: 10px 10px;   /* 🔥 POP 스타일 핵심: 얇고 작게 */
-  font-size: 11px;
+  padding: 10px 14px;
+  font-size: 12px;
   line-height: 1.45;
-  border-radius: 22px;  /* 🔥 너무 둥글지 않고 자연스러움 */
-  max-width: 85%;
+  border-radius: 22px;
+  max-width: fit-content;   /* 🔥 말풍선이 글자 길이에 딱 맞춤 */
   display: inline-block;
-  white-space: pre-wrap;
-  word-break: break-word;
+
+  white-space: nowrap;       /* 🔥 절대 줄바꿈 금지 (핵심!!) */
+  word-break: keep-all;      /* 🔥 단어/이모지 중간 끊김 방지 */
+
   color: #333;
 }
+
 
 .date-bubble {
   display: inline-block;
