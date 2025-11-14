@@ -1,7 +1,7 @@
 body {
   font-family: sans-serif;
   padding: 20px;
-  background: #f7f4f4;
+  background: #D8D9F2;
 }
 
 /* 아이콘이 글씨 아래에 있으면서도 정확히 가운데 정렬되도록 수정 */
@@ -50,7 +50,7 @@ body {
 
 /* 카드 형태 */
 .date-card {
-  background: #ffffff;
+  background: #D8D9F2;
   border-radius: 22px;
   height: 150px;
   display: flex;
