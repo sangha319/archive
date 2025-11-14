@@ -3,73 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>POP</title>
+  <title>날짜별 보기</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="pop-bg">
+<body>
 
-  <!-- POP 날짜 말풍선 -->
-  <div class="date-bubble" id="date-title"></div>
+  <h1 class="title">by date</h1>
 
-  <!-- 메시지 영역 -->
-  <div id="messages" class="chat-container"></div>
+  <div id="date-grid" class="date-grid"></div>
 
   <script>
-
-    /* ============================
-       1) 날짜 변환 함수 추가!!
-       ============================ */
-    function formatKoreanDate(dateStr) {
-      const [year, month, day] = dateStr.split("-");
-      const date = new Date(year, month - 1, day);
-
-      const dayNames = [
-        "일요일","월요일","화요일","수요일",
-        "목요일","금요일","토요일"
-      ];
-      const dayName = dayNames[date.getDay()];
-
-      return `${year}년 ${Number(month)}월 ${Number(day)}일 ${dayName}`;
-    }
-
-    /* ============================
-       2) URL에서 selectedDate 가져오기
-       ============================ */
-    const params = new URLSearchParams(window.location.search);
-    const selectedDate = params.get('date');
-
-    /* ============================
-       3) 날짜를 POP 스타일로 변환해서 출력
-       ============================ */
-    document.getElementById('date-title').innerText =
-      formatKoreanDate(selectedDate);
-
-    /* ============================
-       4) 메시지 불러오기
-       ============================ */
     fetch('messages.json')
       .then(res => res.json())
       .then(data => {
-        const msgBox = document.getElementById('messages');
-        const filtered = data.filter(msg => msg.date === selectedDate);
+        const grid = document.getElementById('date-grid');
 
-        filtered.forEach(msg => {
-          const block = document.createElement('div');
-          block.className = "message-block";
+        // 날짜 리스트 만들기
+        const dates = [...new Set(data.map(msg => msg.date))].sort().reverse();
 
-          block.innerHTML = `
-            <img class="avatar" src="SANGHA.jpg">
-            <div class="msg-right">
-              <div class="sender-line">
-                <span class="name">SANGHA</span>
-                <span class="time">${msg.time}</span>
-              </div>
-              <div class="bubble">${msg.text.replace(/\n/g, "<br>")}</div>
-            </div>
+        // 2024-08-01 → 240801 형식으로 바꾸는 함수
+        function shortDate(dateStr) {
+          return dateStr.replace(/-/g, '').slice(2);
+          // 20240801 → 240801
+        }
+
+        dates.forEach(date => {
+          const card = document.createElement('div');
+          card.className = 'date-card';
+
+          card.innerHTML = `
+            <div class="date-text">${shortDate(date)}</div>
           `;
 
-          msgBox.appendChild(block);
+          card.onclick = () => {
+            window.location.href = `date-view.html?date=${date}`;
+          };
+
+          grid.appendChild(card);
         });
       });
   </script>
