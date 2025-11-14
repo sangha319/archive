@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>날짜별 보기</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <h1 class="title">by date</h1>
+
+  <div id="date-grid" class="date-grid"></div>
+
+  <script>
+    fetch('messages.json')
+      .then(res => res.json())
+      .then(data => {
+        const grid = document.getElementById('date-grid');
+
+        // 날짜 리스트 만들기
+        const dates = [...new Set(data.map(msg => msg.date))].sort().reverse();
+
+        dates.forEach(date => {
+          const card = document.createElement('div');
+          card.className = 'date-card';
+
+          card.innerHTML = `
+            <div class="date-text">${date}</div>
+          `;
+
+          card.onclick = () => {
+            window.location.href = \`date-view.html?date=\${date}\`;
+          };
+
+          grid.appendChild(card);
+        });
+      });
+  </script>
+
+</body>
+</html>
