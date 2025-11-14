@@ -11,7 +11,7 @@
 
   <h1 class="title" id="date-title"></h1>
 
-  <div id="messages"></div>
+  <div id="messages" class="chat-container"></div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
@@ -26,13 +26,21 @@
         const filtered = data.filter(msg => msg.date === selectedDate);
 
         filtered.forEach(msg => {
-          const div = document.createElement('div');
-          div.className = 'preview-item';
-          div.innerHTML = `
-            <p class="text">${msg.text}</p>
-            <p class="date">${msg.date}</p>
+          const block = document.createElement('div');
+          block.className = "message-block";
+
+          block.innerHTML = `
+            <img class="avatar" src="SANGHA.jpg">
+            <div class="bubble-wrap">
+              <div class="sender">
+                <span class="name">SANGHA</span>
+                <span class="time">${msg.time}</span>
+              </div>
+              <div class="bubble">${msg.text.replace(/\n/g, "<br>")}</div>
+            </div>
           `;
-          msgBox.appendChild(div);
+
+          msgBox.appendChild(block);
         });
       });
   </script>
