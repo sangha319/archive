@@ -68,35 +68,35 @@ body {
 
 /* POP 전체 배경 */
 .pop-bg {
-  background: #dcdcf8;  /* 연보라 POP 배경 */
+  background: #d8d7f7;
   min-height: 100vh;
-  padding: 20px;
+  padding: 25px 18px;
 }
 
-/* 날짜 타이틀 */
+/* 날짜 제목 */
 .pop-title {
   text-align: center;
   font-size: 17px;
   font-weight: 600;
-  color: #444;
-  margin-bottom: 20px;
+  color: #555;
+  margin-bottom: 25px;
 }
 
-/* 채팅 전체 레이아웃 */
+/* 전체 채팅 레이아웃 */
 .chat-container {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 25px;
 }
 
-/* 하나의 메시지 블록 */
+/* 하나의 메시지 */
 .message-block {
   display: flex;
-  gap: 12px;
   align-items: flex-start;
+  gap: 10px;
 }
 
-/* 프로필 사진 */
+/* POP 프로필 사진 */
 .avatar {
   width: 42px;
   height: 42px;
@@ -104,18 +104,24 @@ body {
   object-fit: cover;
 }
 
-/* 이름 + 시간 */
-.sender {
+/* POP 오른쪽 영역 */
+.msg-right {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 이름 + 시간 POP 스타일 */
+.sender-line {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .name {
   font-size: 13px;
-  color: #333;
   font-weight: 600;
+  color: #333;
 }
 
 .time {
@@ -128,10 +134,9 @@ body {
   background: #ffffff;
   padding: 14px 18px;
   font-size: 15px;
-  line-height: 1.45;
-  border-radius: 22px;       /* POP 스타일 */
-  box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
-  max-width: 70%;
+  border-radius: 22px;
+  line-height: 1.5;
+  max-width: 75%;
+  box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.08);
   color: #333;
-  white-space: pre-wrap;
 }
