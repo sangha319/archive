@@ -4,25 +4,24 @@ body {
   background: #f7f4f4;
 }
 
+/* 아이콘이 글씨 아래에 있으면서도 정확히 가운데 정렬되도록 수정 */
 .top-icons {
   display: flex;
+  justify-content: center;   /* 가운데 정렬 */
+  align-items: center;
   gap: 15px;
   margin-bottom: 20px;
-  justify-content: center;  /* 가운데 */
-  width: 100%;              /* 전체 폭 */
+  width: 100%;               /* 전체 폭 사용 */
 }
 
-.top-icons div {
-  font-size: 24px;
-  cursor: pointer;
-}
-
+/* 제목도 가운데 정렬 */
 .title {
   font-size: 20px;
-  margin-bottom: 20px;
-  text-align: center;       /* 가운데 */
+  margin-bottom: 10px;
+  text-align: center;        /* 가운데 정렬 */
 }
 
+/* 미리보기 카드 */
 .preview-item {
   background: white;
   padding: 15px;
