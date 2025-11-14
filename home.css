@@ -1,76 +1,71 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #f3e4e4;
+  background-color: #cfd4f7;
   font-family: 'Pretendard', sans-serif;
-}
-
-/* 상단 메뉴 */
-.top-menu {
+  height: 100vh;
+  overflow: hidden;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background: white;
-  padding: 12px 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  justify-content: center;
 }
 
-.menu-item {
-  font-size: 24px;
-  cursor: pointer;
+.chat-container {
+  width: 100%;
+  max-width: 480px;
+  height: 100vh;
+  overflow-y: auto;       /* 스크롤 생김 */
+  padding: 20px 16px 40px;
+  box-sizing: border-box;
 }
 
-/* 제목 */
-.intro-box {
-  max-width: 700px;
-  margin: 40px auto;
-  background: #fff;
-  padding: 30px 24px;
-  border-radius: 18px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.intro-box h2 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.intro-box h3 {
-  margin: 4px 0 20px;
-  font-size: 16px;
-  color: #777;
-}
-
-.click-text {
-  margin: 0 0 16px;
-  font-size: 14px;
-  color: #555;
-}
-
-/* 메시지 미리보기 */
-.preview-message {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.msg {
+/* 개별 메시지 */
+.message {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 18px;
 }
 
+/* 프로필 */
 .profile {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 8px;
+  object-fit: cover;
 }
 
+/* 이름 + 시간 */
+.header {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.name {
+  font-size: 13px;
+  font-weight: bold;
+  color: #444;
+}
+
+.time {
+  font-size: 11px;
+  color: #888;
+}
+
+/* 말풍선 묶음 */
+.bubble-group {
+  max-width: 75%;
+}
+
+/* 말풍선 */
 .bubble {
-  background: #fff7f7;
-  border: 1px solid #ffdede;
+  display: inline-block;
+  padding: 6px 12px;
+  background: #fff;
   border-radius: 16px;
-  padding: 8px 14px;
   font-size: 14px;
-  max-width: 70%;
+  line-height: 1.35;
+  word-break: break-word;
+  width: fit-content;      /* 글자 길이만큼 */
+  max-width: 100%;         /* 너무 길면 줄바꿈 */
 }
