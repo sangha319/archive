@@ -22,12 +22,18 @@
         // 날짜 리스트 만들기
         const dates = [...new Set(data.map(msg => msg.date))].sort().reverse();
 
+        // 2024-08-01 → 240801 형식으로 바꾸는 함수
+        function shortDate(dateStr) {
+          return dateStr.replace(/-/g, '').slice(2);
+          // 20240801 → 240801
+        }
+
         dates.forEach(date => {
           const card = document.createElement('div');
           card.className = 'date-card';
 
           card.innerHTML = `
-            <div class="date-text">${date}</div>
+            <div class="date-text">${shortDate(date)}</div>
           `;
 
           card.onclick = () => {
