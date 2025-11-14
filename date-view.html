@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>날짜별 메시지</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <h1 class="title" id="date-title"></h1>
+
+  <div id="messages"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const selectedDate = params.get('date');
+
+    document.getElementById('date-title').innerText = selectedDate;
+
+    fetch('messages.json')
+      .then(res => res.json())
+      .then(data => {
+        const msgBox = document.getElementById('messages');
+        const filtered = data.filter(msg => msg.date === selectedDate);
+
+        filtered.forEach(msg => {
+          const div = document.createElement('div');
+          div.className = 'preview-item';
+          div.innerHTML = `
+            <p class="text">${msg.text}</p>
+            <p class="date">${msg.date}</p>
+          `;
+          msgBox.appendChild(div);
+        });
+      });
+  </script>
+
+</body>
+</html>
