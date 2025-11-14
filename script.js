@@ -52,3 +52,59 @@ const selectedDate = params.get('date');
 if (selectedDate && document.getElementById('date-title')) {
   document.getElementById('date-title').innerText = formatKoreanDate(selectedDate);
 }
+
+// ===========================
+// 날짜별 POP 메시지 출력 (date-view.html)
+// ===========================
+if (selectedDate && document.getElementById('messages')) {
+
+  fetch("messages.json?v=" + Date.now())  // 캐시 방지
+    .then(res => res.json())
+    .then(data => {
+      const msgBox = document.getElementById("messages");
+
+      // 선택된 날짜 메시지만 필터
+      const filtered = data.filter(msg => msg.date === selectedDate);
+
+      let prevMsg = null;
+
+      filtered.forEach(msg => {
+        const block = document.createElement("div");
+        block.className = "message-block";
+
+        const isContinuous =
+          prevMsg &&
+          prevMsg.time === msg.time;  // 🔥 같은 시간 → 연속 메시지
+
+        // ================================
+        // 1) 새로운 시간의 첫 메시지
+        // ================================
+        if (!isContinuous) {
+          block.innerHTML = `
+            <img class="avatar" src="SANGHA.jpg">
+            <div class="msg-right">
+              <div class="sender-line">
+                <span class="name">SANGHA</span>
+                <span class="time">${msg.time}</span>
+              </div>
+              <div class="bubble">${msg.text.replace(/\n/g, "<br>")}</div>
+            </div>
+          `;
+        } 
+        
+        // ================================
+        // 2) 연속 메시지 (프사/이름/시간 제거)
+        // ================================
+        else {
+          block.innerHTML = `
+            <div class="msg-right continuous">
+              <div class="bubble">${msg.text.replace(/\n/g, "<br>")}</div>
+            </div>
+          `;
+        }
+
+        msgBox.appendChild(block);
+        prevMsg = msg; // 다음 메시지 비교용 저장
+      });
+    });
+}
