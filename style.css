@@ -133,7 +133,7 @@ body {
 .bubble {
   background: #ffffff;
   padding: 10px 14px;   /* 🔥 POP 스타일 핵심: 얇고 작게 */
-  font-size: 15px;
+  font-size: 12px;
   line-height: 1.45;
   border-radius: 22px;  /* 🔥 너무 둥글지 않고 자연스러움 */
   max-width: 65%;
