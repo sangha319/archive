@@ -1,0 +1,40 @@
+body {
+  font-family: sans-serif;
+  padding: 20px;
+  background: #f7f4f4;
+}
+
+.top-icons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.top-icons div {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.preview-item {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.05);
+}
+
+.preview-item .text {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.preview-item .date {
+  font-size: 12px;
+  color: gray;
+}
