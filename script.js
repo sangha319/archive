@@ -1,68 +1,53 @@
-<script>
-  /* ===============================
-      날짜 변환 함수 (YYYY-MM-DD → 한글 날짜)
-  =============================== */
-  function formatKoreanDate(dateStr) {
-    const [y, m, d] = dateStr.split("-");
-    const date = new Date(y, m - 1, d);
-    const dayNames = ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"];
-    return `${y}년 ${Number(m)}월 ${Number(d)}일 ${dayNames[date.getDay()]}`;
-  }
+// ===========================
+// 한국식 POP 날짜 변환 함수
+// ===========================
+function formatKoreanDate(dateStr) {
+  const [year, month, day] = dateStr.split("-");
+  const date = new Date(year, month - 1, day);
 
-  /* URL 파라미터에서 날짜 읽기 */
-  const params = new URLSearchParams(window.location.search);
-  const selectedDate = params.get("date");
+  const dayNames = ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"];
+  const dayName = dayNames[date.getDay()];
 
-  document.getElementById("date-title").innerText = formatKoreanDate(selectedDate);
+  return `${year}년 ${Number(month)}월 ${Number(day)}일 ${dayName}`;
+}
 
-  /* ===============================
-      메시지 불러오기 + 연속 메시지 처리
-  =============================== */
-  fetch("messages.json?v=" + Date.now())
-    .then(res => res.json())
-    .then(data => {
-      const msgBox = document.getElementById("messages");
-      const filtered = data.filter(msg => msg.date === selectedDate);
+// ===========================
+// 최근 메시지 미리보기 (index.html)
+// ===========================
+fetch('messages.json')
+  .then(res => res.json())
+  .then(data => {
+    const preview = document.getElementById('preview');
 
-      let prevMsg = null; // 이전 메시지 저장
+    if (!preview) return; // index가 아닐 때 패스
 
-      filtered.forEach(msg => {
-        const block = document.createElement("div");
-        block.className = "message-block";
+    const recent = data.slice(0, 3); // 최근 3개
 
-        const isContinuous =
-          prevMsg &&
-          prevMsg.time === msg.time; // 🔥 같은 시간이면 연속 메시지!
+    recent.forEach(msg => {
+      const div = document.createElement('div');
+      div.className = 'preview-item';
 
-        /* ======================
-            1) 연속이 아닌 메시지
-        ====================== */
-        if (!isContinuous) {
-          block.innerHTML = `
-            <img class="avatar" src="SANGHA.jpg">
-            <div class="msg-right">
-              <div class="sender-line">
-                <span class="name">SANGHA</span>
-                <span class="time">${msg.time}</span>
-              </div>
-              <div class="bubble">${msg.text.replace(/\n/g, "<br>")}</div>
-            </div>
-          `;
-        }
+      const formattedDate = formatKoreanDate(msg.date);
 
-        /* ======================
-            2) 연속 메시지 (프로필/이름/시간 제거)
-        ====================== */
-        else {
-          block.innerHTML = `
-            <div class="msg-right continuous">
-              <div class="bubble">${msg.text.replace(/\n/g, "<br>")}</div>
-            </div>
-          `;
-        }
+      div.innerHTML = `
+        <p class="text">${msg.text}</p>
+        <p class="date">${formattedDate}</p>
+      `;
 
-        msgBox.appendChild(block);
-        prevMsg = msg; // 현재 메시지를 다음 비교용으로 저장
-      });
+      div.onclick = () => {
+        window.location.href = `all.html?id=${msg.id}`;
+      };
+
+      preview.appendChild(div);
     });
-</script>
+  });
+
+// ===========================
+// 날짜별 화면(date-view.html) 날짜 표시
+// ===========================
+const params = new URLSearchParams(window.location.search);
+const selectedDate = params.get('date');
+
+if (selectedDate && document.getElementById('date-title')) {
+  document.getElementById('date-title').innerText = formatKoreanDate(selectedDate);
+}
