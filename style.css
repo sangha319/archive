@@ -146,7 +146,7 @@ body {
   font-size: 12px;
   line-height: 1.45;
   border-radius: 22px;  /* 🔥 너무 둥글지 않고 자연스러움 */
-  max-width: 65%;
+  max-width: 85%;
   display: inline-block;
   white-space: pre-wrap;
   word-break: break-word;
