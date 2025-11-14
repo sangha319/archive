@@ -20,22 +20,25 @@
         const grid = document.getElementById('date-grid');
 
         // 날짜 리스트 만들기
-        const dates = [...new Set(data.map(msg => msg.date))].sort().reverse();
+        const dates = [...new Set(data.map(msg => msg.date))]
+          .sort()
+          .reverse();
 
-        // 2024-08-01 → 240801 형식으로 바꾸는 함수
+        // 2024-08-01 → 240801 변환 함수
         function shortDate(dateStr) {
           return dateStr.replace(/-/g, '').slice(2);
-          // 20240801 → 240801
         }
 
         dates.forEach(date => {
           const card = document.createElement('div');
           card.className = 'date-card';
 
+          // 🔥 백틱으로 문자열 생성!
           card.innerHTML = `
             <div class="date-text">${shortDate(date)}</div>
           `;
 
+          // 🔥 백틱 없어서 오류났던 부분 수정
           card.onclick = () => {
             window.location.href = `date-view.html?date=${date}`;
           };
