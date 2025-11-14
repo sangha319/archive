@@ -132,11 +132,14 @@ body {
 /* POP 말풍선 */
 .bubble {
   background: #ffffff;
-  padding: 16px 20px;
+  padding: 10px 14px;   /* 🔥 POP 스타일 핵심: 얇고 작게 */
   font-size: 15px;
-  line-height: 1.5;
-  border-radius: 30px;   /* ← 기존보다 확 둥글게! */
-  max-width: 75%;
+  line-height: 1.45;
+  border-radius: 22px;  /* 🔥 너무 둥글지 않고 자연스러움 */
+  max-width: 65%;
+  display: inline-block;
+  white-space: pre-wrap;
+  word-break: break-word;
   color: #333;
 }
 
