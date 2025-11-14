@@ -104,10 +104,16 @@ body {
   object-fit: cover;
 }
 
+.message-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
 /* POP 오른쪽 영역 */
 .msg-right {
-  display: flex;
-  flex-direction: column;
+  display: inline-block;   /* ← 핵심 */
+  max-width: 80%;  
 }
 
 /* 이름 + 시간 POP 스타일 */
