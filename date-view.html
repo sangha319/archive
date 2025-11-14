@@ -9,16 +9,45 @@
 
 <body class="pop-bg">
 
- <div class="date-bubble" id="date-title"></div>
+  <!-- POP 날짜 말풍선 -->
+  <div class="date-bubble" id="date-title"></div>
 
+  <!-- 메시지 영역 -->
   <div id="messages" class="chat-container"></div>
 
   <script>
+
+    /* ============================
+       1) 날짜 변환 함수 추가!!
+       ============================ */
+    function formatKoreanDate(dateStr) {
+      const [year, month, day] = dateStr.split("-");
+      const date = new Date(year, month - 1, day);
+
+      const dayNames = [
+        "일요일","월요일","화요일","수요일",
+        "목요일","금요일","토요일"
+      ];
+      const dayName = dayNames[date.getDay()];
+
+      return `${year}년 ${Number(month)}월 ${Number(day)}일 ${dayName}`;
+    }
+
+    /* ============================
+       2) URL에서 selectedDate 가져오기
+       ============================ */
     const params = new URLSearchParams(window.location.search);
     const selectedDate = params.get('date');
 
-    document.getElementById('date-title').innerText = selectedDate;
+    /* ============================
+       3) 날짜를 POP 스타일로 변환해서 출력
+       ============================ */
+    document.getElementById('date-title').innerText =
+      formatKoreanDate(selectedDate);
 
+    /* ============================
+       4) 메시지 불러오기
+       ============================ */
     fetch('messages.json')
       .then(res => res.json())
       .then(data => {
