@@ -147,23 +147,23 @@ body {
   font-size: 12px;
   line-height: 1.45;
   border-radius: 22px;
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  max-width: 75%;
+  max-width: 75%;       /* 🔥 말풍선 최대 너비 제한 */
+  display: inline-block;
 
-  white-space: pre-wrap;     /* 기본은 줄바꿈 허용 */
-  word-break: keep-all;
-  overflow-wrap: break-word;
+  white-space: normal;  /* 🔥 줄바꿈 허용 */
+  word-break: break-word; /* 🔥 이모티콘/단어 넘침 방지 */
 
   color: #333;
 }
 
+
 /* 25자 이하 → 절대 줄바꿈 금지 */
 .single-line {
-  white-space: nowrap !important;
-  word-break: keep-all !important;
+  white-space: nowrap;
+  word-break: keep-all;
+  max-width: fit-content;
 }
+
 
 .date-bubble {
   display: inline-block;
@@ -181,6 +181,15 @@ body {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 25px;
+}
+.message-block {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px; /* 기본 간격 */
+}
+
+.message-block.continuous {
+  margin-top: -6px; /* 🔥 연속 메시지 간격 좁히기 */
 }
 
 
