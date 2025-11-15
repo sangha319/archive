@@ -53,17 +53,16 @@
         let prevMsg = null;
 
         filtered.forEach(msg => {
-          const block = document.createElement('div');
-          block.className = "message-block";
 
           /* 연속 여부 판정 */
           const isContinuous =
             prevMsg && prevMsg.time === msg.time;
 
-          /* 연속이면 클래스 추가 → 간격 줄이기 */
-          if (isContinuous) {
-            block.classList.add("continuous");
-          }
+          /* 🔥 message-block 클래스 정확히 지정 */
+          const block = document.createElement('div');
+          block.className = isContinuous
+            ? "message-block continuous"
+            : "message-block";
 
           /* 프로필 + 이름 + 시간: 연속이 아닐 때만 표시 */
           if (!isContinuous) {
@@ -95,7 +94,7 @@
           bubble.className = "bubble";
           bubble.innerHTML = msg.text.replace(/\n/g, "<br>");
 
-          // ✔ 25자 이하 → 한 줄 유지
+          /* 25자 이하 → 한 줄 유지 */
           if (msg.text.length <= 25) {
             bubble.classList.add("single-line");
           }
