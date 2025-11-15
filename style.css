@@ -4,21 +4,21 @@ body {
   background: #D8D9F2;
 }
 
-/* 아이콘이 글씨 아래에 있으면서도 정확히 가운데 정렬되도록 수정 */
+/* 아이콘 */
 .top-icons {
   display: flex;
-  justify-content: center;   /* 가운데 정렬 */
+  justify-content: center;
   align-items: center;
   gap: 15px;
   margin-bottom: 20px;
-  width: 100%;               /* 전체 폭 사용 */
+  width: 100%;
 }
 
-/* 제목도 가운데 정렬 */
+/* 제목 */
 .title {
   font-size: 20px;
   margin-bottom: 10px;
-  text-align: center;        /* 가운데 정렬 */
+  text-align: center;
 }
 
 /* 미리보기 카드 */
@@ -40,7 +40,8 @@ body {
   font-size: 12px;
   color: gray;
 }
-/* 날짜 2열 그리드 */
+
+/* 날짜 2열 */
 .date-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -48,7 +49,7 @@ body {
   padding: 10px;
 }
 
-/* 카드 형태 */
+/* 날짜 카드 */
 .date-card {
   background: #D8D9F2;
   border-radius: 22px;
@@ -61,7 +62,6 @@ body {
   transition: transform 0.15s ease;
 }
 
-/* 눌렀을 때 느낌 */
 .date-card:active {
   transform: scale(0.97);
 }
@@ -73,30 +73,36 @@ body {
   padding: 25px 18px;
 }
 
-/* 날짜 제목 */
-.pop-title {
-  text-align: center;
-  font-size: 15px;
-  font-weight: 600;
-  color: #555;
-  margin-bottom: 25px;
+/* 날짜 말풍선 */
+.date-bubble {
+  background: #e2e3f9;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #666;
+  display: block;
+  width: fit-content;
+  margin: 0 auto 25px;
 }
 
-/* 전체 채팅 레이아웃 */
+/* 채팅 컨테이너 */
 .chat-container {
   display: flex;
   flex-direction: column;
-  gap: 25px;
 }
 
-/* 하나의 메시지 */
+/* 메시지 기본 */
 .message-block {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  gap: 8px;
+  margin-bottom: 14px; /* 기본 간격 */
 }
 
-/* POP 프로필 사진 */
+.message-block.continuous {
+  margin-top: -6px; /* 🔥 연속 메시지 POP 간격 */
+}
+
+/* 프로필 */
 .avatar {
   width: 42px;
   height: 42px;
@@ -104,23 +110,17 @@ body {
   object-fit: cover;
 }
 
-.message-block {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-/* POP 오른쪽 영역 */
+/* 오른쪽 영역 */
 .msg-right {
-  display: inline-block;   /* ← 핵심 */
-  max-width: 80%;  
+  display: inline-block;
+  max-width: 80%;
 }
 
 .msg-right.continuous {
-  margin-left: 65px; /* 프로필 아이콘만큼 들여쓰기 */
+  margin-left: 50px; /* 프로필만큼 들여쓰기 */
 }
 
-/* 이름 + 시간 POP 스타일 */
+/* 이름 + 시간 */
 .sender-line {
   display: flex;
   align-items: center;
@@ -139,57 +139,26 @@ body {
   color: #888;
 }
 
-/* POP 말풍선 */
-/* 기본: 줄바꿈 가능 (긴 문장용) */
+/* 말풍선 공통 */
 .bubble {
   background: #ffffff;
   padding: 10px 14px;
   font-size: 12px;
   line-height: 1.45;
   border-radius: 22px;
-  max-width: 75%;       /* 🔥 말풍선 최대 너비 제한 */
+
+  max-width: 75%;          /* 🔥 오른쪽 말풍선 최대 너비 */
   display: inline-block;
 
-  white-space: normal;  /* 🔥 줄바꿈 허용 */
-  word-break: break-word; /* 🔥 이모티콘/단어 넘침 방지 */
+  white-space: normal;     /* 기본: 줄바꿈 가능 */
+  word-break: break-word;  /* 이모지/문장 넘침 방지 */
 
   color: #333;
 }
 
-
-/* 25자 이하 → 절대 줄바꿈 금지 */
+/* ✨ 25자 이하: 절대 줄바꿈 금지 (POP 스타일) */
 .single-line {
   white-space: nowrap;
-  word-break: keep-all;
   max-width: fit-content;
+  word-break: keep-all;
 }
-
-
-.date-bubble {
-  display: inline-block;
-  background: #e2e3f9;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #666;
-  text-align: center;
-
-  /* 날짜 중앙 정렬 */
-  display: block;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 25px;
-}
-.message-block {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px; /* 기본 간격 */
-}
-
-.message-block.continuous {
-  margin-top: -6px; /* 🔥 연속 메시지 간격 좁히기 */
-}
-
-
