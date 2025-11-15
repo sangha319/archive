@@ -99,17 +99,15 @@ body {
   margin-bottom: 0;
 }
 
-/* 연속 메시지(같은 시간) — 간격 조금만 */
+/* 연속 메시지(같은 시간) — 간격 조금 */
 .message-block.continuous {
-  margin-top: 8px;           /* 카톡처럼 약간만 간격 */
+  margin-top: 8px;
 }
 
 /* msg-right 들여쓰기 */
 .msg-right.continuous {
-  margin-left: 52px;         /* 프로필 만큼 들여쓰기 */
+  margin-left: 52px;
 }
-
-
 
 /* 프로필 */
 .avatar {
@@ -126,7 +124,7 @@ body {
 }
 
 .msg-right.continuous {
-  margin-left: 50px; /* 프로필만큼 들여쓰기 */
+  margin-left: 50px;
 }
 
 /* 이름 + 시간 */
@@ -156,38 +154,30 @@ body {
   line-height: 1.45;
   border-radius: 22px;
 
-  max-width: 75%;          /* 🔥 오른쪽 말풍선 최대 너비 */
+  max-width: 75%;
   display: inline-block;
 
-  white-space: normal;     /* 기본: 줄바꿈 가능 */
-  word-break: break-word;  /* 이모지/문장 넘침 방지 */
+  white-space: normal;
+  word-break: break-word;
 
   color: #333;
 }
 
-/* ✨ 25자 이하: 절대 줄바꿈 금지 (POP 스타일) */
+/* 25자 이하 → 줄바꿈 금지 */
 .single-line {
   white-space: nowrap;
   max-width: fit-content;
   word-break: keep-all;
 }
+
+/* ✨ 이미지 크기 (date-view & 전체보기 공통 적용) */
 .chat-image {
-  width: 70%;           /* 화면 기준 비율 */
-  max-width: 280px;     /* 데이트뷰와 동일한 최대 크기 */
+  width: 75%;            /* 화면 기준 비율 */
+  max-width: 280px;      /* date-view와 동일한 최대 크기 */
   border-radius: 16px;
   display: block;
   margin-top: 6px;
   margin-bottom: 12px;
 }
 
-
-/* 전체보기(all.html) 이미지도 date-view와 동일한 크기로 적용 */
-.all-view .chat-img {
-  width: 75% !important;
-  max-width: 75% !important;
-  border-radius: 18px;
-  margin-top: 4px;
-  margin-bottom: 10px;
-  display: block;
-}
-
+/* ⛔ 기존 .all-view .chat-img 스타일은 삭제됨 */
