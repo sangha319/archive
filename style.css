@@ -172,10 +172,14 @@ body {
   word-break: keep-all;
 }
 .chat-image {
-  width: 230px;    /* 적당한 크기 */
-  border-radius: 14px;
-  margin-bottom: 6px; /* 아래 여백 */
+  width: 70%;           /* 화면 기준 비율 */
+  max-width: 280px;     /* 데이트뷰와 동일한 최대 크기 */
+  border-radius: 16px;
+  display: block;
+  margin-top: 6px;
+  margin-bottom: 12px;
 }
+
 
 /* 전체보기(all.html) 이미지도 date-view와 동일한 크기로 적용 */
 .all-view .chat-img {
