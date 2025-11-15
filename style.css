@@ -171,3 +171,8 @@ body {
   max-width: fit-content;
   word-break: keep-all;
 }
+.chat-image {
+  width: 230px;    /* 적당한 크기 */
+  border-radius: 14px;
+  margin-bottom: 6px; /* 아래 여백 */
+}
