@@ -99,7 +99,7 @@ body {
 }
 
 .message-block.continuous {
-  margin-top: -6px; /* 🔥 연속 메시지 POP 간격 */
+  margin-top: -14px; /* 🔥 연속 메시지 POP 간격 */
 }
 
 /* 프로필 */
