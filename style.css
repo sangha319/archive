@@ -146,13 +146,21 @@ body {
   font-size: 12px;
   line-height: 1.45;
   border-radius: 22px;
-  max-width: fit-content;   /* 🔥 말풍선이 글자 길이에 딱 맞춤 */
-  display: inline-block;
+  display: inline-flex;          /* 🔥 이모지 줄바꿈 문제 해결 */
+  align-items: center;
+  width: fit-content;
+  max-width: 75%;                /* 긴 문장은 자동 줄바꿈 */
 
-  white-space: nowrap;       /* 🔥 절대 줄바꿈 금지 (핵심!!) */
-  word-break: keep-all;      /* 🔥 단어/이모지 중간 끊김 방지 */
+  white-space: pre-wrap;         /* 긴 문장 줄바꿈 허용 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 
   color: #333;
+}
+
+/* 🔥 짧은 문장은 절대 줄바꿈 안 되게 강제 */
+.bubble.short {
+  white-space: nowrap !important;
 }
 
 
