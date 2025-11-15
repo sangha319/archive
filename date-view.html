@@ -17,7 +17,9 @@
 
   <script>
 
-    /* 날짜 변환 함수 */
+    /* ===========================
+        날짜 변환 함수
+    ============================ */
     function formatKoreanDate(dateStr) {
       const [year, month, day] = dateStr.split("-");
       const date = new Date(year, month - 1, day);
@@ -39,29 +41,65 @@
     document.getElementById('date-title').innerText =
       formatKoreanDate(selectedDate);
 
-    /* 메시지 불러오기 */
-    fetch('messages.json')
+    /* ===========================
+        메시지 불러오기 + 연속 처리 추가됨
+    ============================ */
+    fetch("messages.json?v=" + Date.now())
       .then(res => res.json())
       .then(data => {
         const msgBox = document.getElementById('messages');
         const filtered = data.filter(msg => msg.date === selectedDate);
 
+        let prevMsg = null;
+
         filtered.forEach(msg => {
           const block = document.createElement('div');
           block.className = "message-block";
 
-          block.innerHTML = `
-            <img class="avatar" src="SANGHA.jpg">
-            <div class="msg-right">
-              <div class="sender-line">
-                <span class="name">SANGHA</span>
-                <span class="time">${msg.time}</span>
-              </div>
-              <div class="bubble">${msg.text.replace(/\n/g, "<br>")}</div>
-            </div>
-          `;
+          const isContinuous =
+            prevMsg &&
+            prevMsg.time === msg.time;
+
+          /* =====================
+              msg-right 생성
+          ===================== */
+          const right = document.createElement("div");
+          right.className = isContinuous
+            ? "msg-right continuous"
+            : "msg-right";
+
+          /* =====================
+              연속 메시지가 아닐 때: 프로필+이름+시간 표시
+          ===================== */
+          if (!isContinuous) {
+            block.innerHTML = `<img class="avatar" src="SANGHA.jpg">`;
+
+            const header = document.createElement("div");
+            header.className = "sender-line";
+            header.innerHTML = `
+              <span class="name">SANGHA</span>
+              <span class="time">${msg.time}</span>
+            `;
+            right.appendChild(header);
+          }
+
+          /* =====================
+              bubble 생성 (여기 추가됨!!)
+          ===================== */
+          const bubble = document.createElement("div");
+          bubble.className = "bubble";
+          bubble.innerHTML = msg.text.replace(/\n/g, "<br>");
+
+          // ✔ 25자 이하이면 강제로 한 줄 유지
+          if (msg.text.length <= 25) {
+            bubble.classList.add("single-line");
+          }
+
+          right.appendChild(bubble);
+          block.appendChild(right);
 
           msgBox.appendChild(block);
+          prevMsg = msg;
         });
       });
 
