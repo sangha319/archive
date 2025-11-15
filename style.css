@@ -160,10 +160,10 @@ body {
 }
 
 /* 25자 이하 → 절대 줄바꿈 금지 */
-.bubble.single-line {
+.single-line {
   white-space: nowrap !important;
+  word-break: keep-all !important;
 }
-
 
 .date-bubble {
   display: inline-block;
