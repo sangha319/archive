@@ -60,6 +60,11 @@
           const isContinuous =
             prevMsg && prevMsg.time === msg.time;
 
+          /* 연속이면 클래스 추가 → 간격 줄이기 */
+          if (isContinuous) {
+            block.classList.add("continuous");
+          }
+
           /* 프로필 + 이름 + 시간: 연속이 아닐 때만 표시 */
           if (!isContinuous) {
             const avatar = document.createElement("img");
