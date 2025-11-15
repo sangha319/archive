@@ -42,7 +42,7 @@
       formatKoreanDate(selectedDate);
 
     /* ===========================
-        메시지 불러오기 + 연속 메시지 처리
+        메시지 불러오기 + 연속 메시지 처리 + 사진 지원 추가
     ============================ */
     fetch("messages.json?v=" + Date.now())
       .then(res => res.json())
@@ -53,18 +53,15 @@
         let prevMsg = null;
 
         filtered.forEach(msg => {
-
-          /* 연속 여부 판정 */
           const isContinuous =
             prevMsg && prevMsg.time === msg.time;
 
-          /* 🔥 message-block 클래스 정확히 지정 */
-          const block = document.createElement('div');
+          const block = document.createElement("div");
           block.className = isContinuous
             ? "message-block continuous"
             : "message-block";
 
-          /* 프로필 + 이름 + 시간: 연속이 아닐 때만 표시 */
+          /* 프로필: 연속 메시지가 아닐 때만 */
           if (!isContinuous) {
             const avatar = document.createElement("img");
             avatar.className = "avatar";
@@ -72,13 +69,13 @@
             block.appendChild(avatar);
           }
 
-          /* msg-right 영역 */
+          /* 오른쪽 박스 */
           const right = document.createElement("div");
           right.className = isContinuous
             ? "msg-right continuous"
             : "msg-right";
 
-          /* 헤더(이름 + 시간) */
+          /* 헤더 (이름 + 시간): 연속 메시지는 생략 */
           if (!isContinuous) {
             const header = document.createElement("div");
             header.className = "sender-line";
@@ -89,19 +86,30 @@
             right.appendChild(header);
           }
 
-          /* 말풍선 bubble */
-          const bubble = document.createElement("div");
-          bubble.className = "bubble";
-          bubble.innerHTML = msg.text.replace(/\n/g, "<br>");
-
-          /* 25자 이하 → 한 줄 유지 */
-          if (msg.text.length <= 25) {
-            bubble.classList.add("single-line");
+          /* ===========================
+                📷 사진 메시지 처리 추가!!
+          ============================ */
+          if (msg.image) {
+            const img = document.createElement("img");
+            img.src = msg.image;
+            img.className = "chat-image";
+            right.appendChild(img);
           }
 
-          right.appendChild(bubble);
-          block.appendChild(right);
+          /* 텍스트 말풍선 */
+          if (msg.text) {
+            const bubble = document.createElement("div");
+            bubble.className = "bubble";
+            bubble.innerHTML = msg.text.replace(/\n/g, "<br>");
 
+            if (msg.text.length <= 25) {
+              bubble.classList.add("single-line");
+            }
+
+            right.appendChild(bubble);
+          }
+
+          block.appendChild(right);
           msgBox.appendChild(block);
           prevMsg = msg;
         });
