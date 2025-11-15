@@ -95,12 +95,15 @@ body {
 .message-block {
   display: flex;
   gap: 8px;
-  margin-bottom: 14px; /* 기본 간격 */
+  margin-bottom: 12px;
 }
 
+/* 연속 메시지 간격 확 줄이기 */
 .message-block.continuous {
-  margin-top: -14px; /* 🔥 연속 메시지 POP 간격 */
+  margin-top: -10px;    /* 위쪽 여백 완전 붙이기 */
+  margin-bottom: -4px;  /* 아래쪽 간격도 더 줄이기 */
 }
+
 
 /* 프로필 */
 .avatar {
