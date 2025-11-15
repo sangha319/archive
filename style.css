@@ -91,18 +91,24 @@ body {
   flex-direction: column;
 }
 
-/* 메시지 기본 */
+/* 기본 메시지 박스 */
 .message-block {
   display: flex;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-top: 18px;          /* 시간 다른 메시지 간격 (카카오 기준 넓게) */
+  margin-bottom: 0;
 }
 
-/* 연속 메시지 간격 확 줄이기 */
+/* 연속 메시지(같은 시간) — 간격 조금만 */
 .message-block.continuous {
-  margin-top: -10px;    /* 위쪽 여백 완전 붙이기 */
-  margin-bottom: -4px;  /* 아래쪽 간격도 더 줄이기 */
+  margin-top: 8px;           /* 카톡처럼 약간만 간격 */
 }
+
+/* msg-right 들여쓰기 */
+.msg-right.continuous {
+  margin-left: 52px;         /* 프로필 만큼 들여쓰기 */
+}
+
 
 
 /* 프로필 */
