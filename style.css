@@ -176,3 +176,14 @@ body {
   border-radius: 14px;
   margin-bottom: 6px; /* 아래 여백 */
 }
+
+/* 전체보기(all.html) 이미지도 date-view와 동일한 크기로 적용 */
+.all-view .chat-img {
+  width: 75% !important;
+  max-width: 75% !important;
+  border-radius: 18px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  display: block;
+}
+
