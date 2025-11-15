@@ -140,26 +140,27 @@ body {
 }
 
 /* POP 말풍선 */
+/* 기본: 줄바꿈 가능 (긴 문장용) */
 .bubble {
   background: #ffffff;
   padding: 10px 14px;
   font-size: 12px;
   line-height: 1.45;
   border-radius: 22px;
-  display: inline-flex;          /* 🔥 이모지 줄바꿈 문제 해결 */
+  display: inline-flex;
   align-items: center;
   width: fit-content;
-  max-width: 75%;                /* 긴 문장은 자동 줄바꿈 */
+  max-width: 75%;
 
-  white-space: pre-wrap;         /* 긴 문장 줄바꿈 허용 */
+  white-space: pre-wrap;     /* 기본은 줄바꿈 허용 */
   word-break: keep-all;
   overflow-wrap: break-word;
 
   color: #333;
 }
 
-/* 🔥 짧은 문장은 절대 줄바꿈 안 되게 강제 */
-.bubble.short {
+/* 25자 이하 → 절대 줄바꿈 금지 */
+.bubble.single-line {
   white-space: nowrap !important;
 }
 
