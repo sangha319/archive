@@ -9,9 +9,6 @@
 
 <body class="pop-bg">
 
-  <!-- 전체 대화 제목 -->
-  <div class="date-bubble" style="margin-bottom: 30px;">전체 대화 보기</div>
-
   <!-- 전체 메시지 영역 -->
   <div id="all-messages" class="chat-container"></div>
 
@@ -94,11 +91,12 @@
 
           /* 메시지 내용 (말풍선 or 이미지) */
           if (msg.image) {
-            /* 이미지 메시지 */
+            /* 🔥 이미지 메시지 — date-view와 동일한 크기 유지 */
             const img = document.createElement("img");
             img.src = msg.image;
-            img.className = "pop-image";
+            img.className = "chat-img";  <!-- 수정됨 -->
             right.appendChild(img);
+
           } else {
             /* 텍스트 말풍선 */
             const bubble = document.createElement("div");
