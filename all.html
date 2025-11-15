@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>전체 대화</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="pop-bg">
+
+  <!-- 전체 대화 제목 -->
+  <div class="date-bubble" style="margin-bottom: 30px;">전체 대화 보기</div>
+
+  <!-- 전체 메시지 영역 -->
+  <div id="all-messages" class="chat-container"></div>
+
+  <script>
+
+    /* 날짜 변환 → POP 스타일 유지 */
+    function formatKoreanDate(dateStr) {
+      const [year, month, day] = dateStr.split("-");
+      const date = new Date(year, month - 1, day);
+
+      const dayNames = ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"];
+      const dayName = dayNames[date.getDay()];
+
+      return `${year}년 ${Number(month)}월 ${Number(day)}일 ${dayName}`;
+    }
+
+    /* 전체 메시지 불러오기 */
+    fetch("messages.json?v=" + Date.now())
+      .then(res => res.json())
+      .then(data => {
+        /* 오래된 순으로 정렬 */
+        data.sort((a, b) => {
+          if (a.date === b.date) return a.id - b.id;
+          return a.date.localeCompare(b.date);
+        });
+
+        const container = document.getElementById("all-messages");
+
+        let prevDate = null;
+        let prevMsg = null;
+
+        data.forEach(msg => {
+          
+          /* 날짜가 바뀌면 날짜 말풍선 추가 (POP 스타일 그대로) */
+          if (msg.date !== prevDate) {
+            const dateBubble = document.createElement("div");
+            dateBubble.className = "date-bubble";
+            dateBubble.innerText = formatKoreanDate(msg.date);
+            container.appendChild(dateBubble);
+
+            prevMsg = null; // 날짜가 바뀌면 연속 메시지 리셋
+          }
+
+          /* 새 메시지 블록 */
+          const block = document.createElement("div");
+          block.className = "message-block";
+
+          /* 연속 여부 판정 (같은 시간 = 연속) */
+          const isContinuous =
+            prevMsg &&
+            prevMsg.date === msg.date &&
+            prevMsg.time === msg.time;
+
+          if (isContinuous) {
+            block.classList.add("continuous");
+          }
+
+          /* 연속 아닌 경우 → 프로필 표시 */
+          if (!isContinuous) {
+            const avatar = document.createElement("img");
+            avatar.className = "avatar";
+            avatar.src = "SANGHA.jpg";
+            block.appendChild(avatar);
+          }
+
+          /* msg-right 영역 */
+          const right = document.createElement("div");
+          right.className = isContinuous ? "msg-right continuous" : "msg-right";
+
+          /* 헤더 (이름 + 시간) */
+          if (!isContinuous) {
+            const header = document.createElement("div");
+            header.className = "sender-line";
+            header.innerHTML = `
+              <span class="name">SANGHA</span>
+              <span class="time">${msg.time}</span>
+            `;
+            right.appendChild(header);
+          }
+
+          /* 메시지 내용 (말풍선 or 이미지) */
+          if (msg.image) {
+            /* 이미지 메시지 */
+            const img = document.createElement("img");
+            img.src = msg.image;
+            img.className = "pop-image";
+            right.appendChild(img);
+          } else {
+            /* 텍스트 말풍선 */
+            const bubble = document.createElement("div");
+            bubble.className = "bubble";
+            bubble.innerHTML = msg.text.replace(/\n/g, "<br>");
+
+            if (msg.text.length <= 25) {
+              bubble.classList.add("single-line");
+            }
+
+            right.appendChild(bubble);
+          }
+
+          block.appendChild(right);
+          container.appendChild(block);
+
+          prevMsg = msg;
+          prevDate = msg.date;
+        });
+      });
+
+  </script>
+
+</body>
+</html>
