@@ -180,4 +180,11 @@ body {
   margin-bottom: 12px;
 }
 
-/* ⛔ 기존 .all-view .chat-img 스타일은 삭제됨 */
+.chat-video {
+  width: 75%;
+  max-width: 280px;
+  border-radius: 16px;
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
+
