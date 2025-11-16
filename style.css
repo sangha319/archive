@@ -170,19 +170,33 @@ body {
   word-break: keep-all;
 }
 
-/* ✨ 이미지 크기 (date-view & 전체보기 공통 적용) */
+/* ============================
+   📌 JPG (일반 사진) 기본 크기
+============================ */
 .chat-image {
-  width: 75%;            /* 화면 기준 비율 */
-  max-width: 280px;      /* date-view와 동일한 최대 크기 */
+  width: 72%;
+  max-width: 260px;
   border-radius: 16px;
-  display: block;
   margin-top: 6px;
   margin-bottom: 12px;
+  display: block;
+}
+
+/* ============================
+   📌 PNG (이모티콘/스티커)
+   - 카톡 이모티콘 느낌으로 작게!
+============================ */
+.chat-image-png {
+  width: 120px;       /* 🔥 이모티콘 크기 */
+  height: auto;
+  border-radius: 12px;
+  margin: 4px 0 10px 0;
+  display: block;
 }
 
 .chat-video {
-  width: 75%;
-  max-width: 280px;
+  width: 72%;
+  max-width: 260px;
   border-radius: 16px;
   margin-top: 6px;
   margin-bottom: 12px;
