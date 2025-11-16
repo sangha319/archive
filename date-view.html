@@ -42,7 +42,8 @@
       formatKoreanDate(selectedDate);
 
     /* ===========================
-        메시지 불러오기 + 연속 메시지 처리 + 사진 지원 추가
+        메시지 불러오기 + 연속 메시지 처리
+        + 이미지 + 동영상 지원
     ============================ */
     fetch("messages.json?v=" + Date.now())
       .then(res => res.json())
@@ -53,6 +54,8 @@
         let prevMsg = null;
 
         filtered.forEach(msg => {
+
+          /* 연속 여부 판단 (시간 동일) */
           const isContinuous =
             prevMsg && prevMsg.time === msg.time;
 
@@ -61,7 +64,7 @@
             ? "message-block continuous"
             : "message-block";
 
-          /* 프로필: 연속 메시지가 아닐 때만 */
+          /* 프로필 (연속 아닐 때만) */
           if (!isContinuous) {
             const avatar = document.createElement("img");
             avatar.className = "avatar";
@@ -69,13 +72,12 @@
             block.appendChild(avatar);
           }
 
-          /* 오른쪽 박스 */
           const right = document.createElement("div");
           right.className = isContinuous
             ? "msg-right continuous"
             : "msg-right";
 
-          /* 헤더 (이름 + 시간): 연속 메시지는 생략 */
+          /* 이름 + 시간 (연속 아닐 때만) */
           if (!isContinuous) {
             const header = document.createElement("div");
             header.className = "sender-line";
@@ -86,9 +88,9 @@
             right.appendChild(header);
           }
 
-          /* ===========================
-                📷 사진 메시지 처리 추가!!
-          ============================ */
+          /* ===============================
+                📷 이미지 메시지
+          =============================== */
           if (msg.image) {
             const img = document.createElement("img");
             img.src = msg.image;
@@ -96,7 +98,20 @@
             right.appendChild(img);
           }
 
-          /* 텍스트 말풍선 */
+          /* ===============================
+                🎥 동영상 메시지 (추가됨!!)
+          =============================== */
+          if (msg.video) {
+            const video = document.createElement("video");
+            video.src = msg.video;
+            video.controls = true;
+            video.className = "chat-video";
+            right.appendChild(video);
+          }
+
+          /* ===============================
+                💬 텍스트 메시지
+          =============================== */
           if (msg.text) {
             const bubble = document.createElement("div");
             bubble.className = "bubble";
@@ -105,12 +120,12 @@
             if (msg.text.length <= 25) {
               bubble.classList.add("single-line");
             }
-
             right.appendChild(bubble);
           }
 
           block.appendChild(right);
           msgBox.appendChild(block);
+
           prevMsg = msg;
         });
       });
