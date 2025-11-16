@@ -43,7 +43,7 @@
 
     /* ===========================
         메시지 불러오기 + 연속 메시지 처리
-        + 이미지 + 동영상 지원
+        + 이미지(JPG/PNG 구분), 동영상 처리
     ============================ */
     fetch("messages.json?v=" + Date.now())
       .then(res => res.json())
@@ -55,7 +55,7 @@
 
         filtered.forEach(msg => {
 
-          /* 연속 여부 판단 (시간 동일) */
+          /* 🔥 연속 여부 판단 (같은 시간) */
           const isContinuous =
             prevMsg && prevMsg.time === msg.time;
 
@@ -89,17 +89,25 @@
           }
 
           /* ===============================
-                📷 이미지 메시지
+                📷 이미지 메시지 (PNG 구분 적용)
           =============================== */
           if (msg.image) {
             const img = document.createElement("img");
             img.src = msg.image;
-            img.className = "chat-image";
+
+            // 기본 이미지 스타일
+            img.classList.add("chat-image");
+
+            // PNG 감지 → 별도 스타일 적용
+            if (msg.image.toLowerCase().endsWith(".png")) {
+              img.classList.add("chat-image-png");
+            }
+
             right.appendChild(img);
           }
 
           /* ===============================
-                🎥 동영상 메시지 (추가됨!!)
+                🎥 동영상 메시지
           =============================== */
           if (msg.video) {
             const video = document.createElement("video");
