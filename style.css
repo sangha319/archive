@@ -217,3 +217,40 @@ body {
   margin-top: 6px;
   margin-bottom: 12px;
 }
+
+/* =============================
+   ◀ ▶ 페이지 이동 버튼
+============================= */
+.nav-buttons {
+  position: fixed;
+  bottom: 25px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 25px;
+  pointer-events: none; /* 부모는 클릭 안되게 */
+}
+
+.circle-btn {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.12);
+  border: none;
+  font-size: 22px;
+  color: #666;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: auto; /* 버튼은 클릭되게 */
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.circle-btn:active {
+  background: rgba(240, 240, 240, 1);
+  transform: scale(0.93);
+}
