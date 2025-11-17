@@ -5,6 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>POP</title>
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ◀ ▶ 네비게이션 버튼 */
+    .nav-btn {
+      position: fixed;
+      bottom: 30px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #777;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .nav-left {
+      left: 25px;
+    }
+    .nav-right {
+      right: 25px;
+    }
+
+    .nav-btn:active {
+      transform: scale(0.92);
+    }
+  </style>
 </head>
 
 <body class="pop-bg">
@@ -14,6 +45,12 @@
 
   <!-- 메시지 영역 -->
   <div id="messages" class="chat-container"></div>
+
+  <!-- ◀ 네비 버튼 -->
+  <div class="nav-btn nav-left" id="prevBtn">◀</div>
+
+  <!-- ▶ 네비 버튼 -->
+  <div class="nav-btn nav-right" id="nextBtn">▶</div>
 
   <script>
 
@@ -42,20 +79,40 @@
       formatKoreanDate(selectedDate);
 
     /* ===========================
-        메시지 불러오기 + 연속 메시지 처리
-        + 이미지(JPG/PNG 구분), 동영상 처리
+        메시지 불러오기
     ============================ */
+    let allDates = [];
+
     fetch("messages.json?v=" + Date.now())
       .then(res => res.json())
       .then(data => {
         const msgBox = document.getElementById('messages');
-        const filtered = data.filter(msg => msg.date === selectedDate);
 
+        /* 날짜 목록 저장 */
+        allDates = [...new Set(data.map(msg => msg.date))].sort();
+
+        /* 현재 페이지 index 찾기 */
+        const currentIndex = allDates.indexOf(selectedDate);
+
+        /* 버튼 기능 연결 */
+        document.getElementById("prevBtn").onclick = () => {
+          if (currentIndex > 0) {
+            location.href = `date-view.html?date=${allDates[currentIndex - 1]}`;
+          }
+        };
+        document.getElementById("nextBtn").onclick = () => {
+          if (currentIndex < allDates.length - 1) {
+            location.href = `date-view.html?date=${allDates[currentIndex + 1]}`;
+          }
+        };
+
+        /* 현재 날짜 메시지만 필터 */
+        const filtered = data.filter(msg => msg.date === selectedDate);
         let prevMsg = null;
 
         filtered.forEach(msg => {
 
-          /* 🔥 연속 여부 판단 (같은 시간) */
+          /* 연속 여부 판단 */
           const isContinuous =
             prevMsg && prevMsg.time === msg.time;
 
@@ -88,17 +145,12 @@
             right.appendChild(header);
           }
 
-          /* ===============================
-                📷 이미지 메시지 (PNG 구분 적용)
-          =============================== */
+          /* 이미지 */
           if (msg.image) {
             const img = document.createElement("img");
             img.src = msg.image;
-
-            // 기본 이미지 스타일
             img.classList.add("chat-image");
 
-            // PNG 감지 → 별도 스타일 적용
             if (msg.image.toLowerCase().endsWith(".png")) {
               img.classList.add("chat-image-png");
             }
@@ -106,9 +158,7 @@
             right.appendChild(img);
           }
 
-          /* ===============================
-                🎥 동영상 메시지
-          =============================== */
+          /* 동영상 */
           if (msg.video) {
             const video = document.createElement("video");
             video.src = msg.video;
@@ -117,9 +167,7 @@
             right.appendChild(video);
           }
 
-          /* ===============================
-                💬 텍스트 메시지
-          =============================== */
+          /* 텍스트 */
           if (msg.text) {
             const bubble = document.createElement("div");
             bubble.className = "bubble";
