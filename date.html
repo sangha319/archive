@@ -5,6 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>날짜별 보기</title>
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* 날짜 카드 안의 사진 미리보기 */
+    .preview-img {
+      width: 80%;
+      height: 80%;
+      object-fit: cover;
+      border-radius: 18px;
+      margin-bottom: 8px;
+    }
+
+    .date-text {
+      font-size: 18px;
+      color: #444;
+      font-weight: 600;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
@@ -13,48 +31,55 @@
 
   <div id="date-grid" class="date-grid"></div>
 
-  <!-- 🔥 페이지네이션 영역 -->
+  <!-- 페이지네이션 -->
   <div id="pagination" style="text-align:center; margin-top:20px; font-size:14px;"></div>
 
   <script>
 
-    const ITEMS_PER_PAGE = 20;   // 한 페이지에 20개 표시
+    const ITEMS_PER_PAGE = 20; // 한 페이지 20개 날짜
 
-    // 현재 page 읽기
     const params = new URLSearchParams(window.location.search);
     let currentPage = parseInt(params.get("page")) || 1;
 
     fetch('messages.json?v=' + Date.now())
       .then(res => res.json())
       .then(data => {
+
         const grid = document.getElementById('date-grid');
 
-        // 날짜 리스트 만들기 (중복 제거 + 최신순 정렬)
-        let dates = [...new Set(data.map(msg => msg.date))]
-          .sort((a, b) => new Date(b) - new Date(a)); // 최신 날짜가 위로
+        // 날짜 목록 (중복 제거 + 최신순)
+        const dates = [...new Set(data.map(m => m.date))]
+          .sort((a, b) => new Date(b) - new Date(a));
 
-        // 페이지 전체 개수
         const totalPages = Math.ceil(dates.length / ITEMS_PER_PAGE);
 
-        // 현재 페이지에 해당하는 데이터 자르기
-        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = startIndex + ITEMS_PER_PAGE;
-        const pageDates = dates.slice(startIndex, endIndex);
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        const pageDates = dates.slice(start, end);
 
-        // YYYY-MM-DD → 240801 변환 함수
+        // 날짜 줄임(YYYYMMDD → 240801)
         function shortDate(dateStr) {
           return dateStr.replace(/-/g, '').slice(2);
         }
 
-        // 날짜 카드 생성
         pageDates.forEach(date => {
+
+          // 해당 날짜의 메시지들 찾기
+          const dayMessages = data.filter(msg => msg.date === date);
+
+          // 이미지 메시지 중 첫 번째를 미리보기로 사용
+          const previewImg = dayMessages.find(m => m.image)?.image || null;
+
           const card = document.createElement('div');
           card.className = 'date-card';
 
+          // 날짜 카드 표시 내용
           card.innerHTML = `
+            ${previewImg ? `<img src="${previewImg}" class="preview-img">` : ""}
             <div class="date-text">${shortDate(date)}</div>
           `;
 
+          // 클릭 → 해당 날짜 페이지 이동
           card.onclick = () => {
             window.location.href = `date-view.html?date=${date}`;
           };
@@ -63,20 +88,17 @@
         });
 
         /* -------------------------
-              페이지네이션 버튼 생성
+              페이지네이션 버튼
         ------------------------- */
         const pagination = document.getElementById("pagination");
         let html = "";
 
-        // 이전 버튼
         if (currentPage > 1) {
           html += `<button onclick="goPage(${currentPage - 1})" style="margin-right:10px;">〈 이전</button>`;
         }
 
-        // 페이지 정보
-        html += `<span> ${currentPage} / ${totalPages} </span>`;
+        html += `<span>${currentPage} / ${totalPages}</span>`;
 
-        // 다음 버튼
         if (currentPage < totalPages) {
           html += `<button onclick="goPage(${currentPage + 1})" style="margin-left:10px;">다음 〉</button>`;
         }
