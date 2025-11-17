@@ -7,55 +7,42 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-    /* 전체 카드 그리드 */
-    .date-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 16px;
-      padding: 20px;
-    }
-
-    /* 날짜 카드 */
+    /* 날짜 카드 전체 화면 꽉 채우기 */
     .date-card {
-      background: rgba(255,255,255,0.45);
+      background: #E3E4F8;
       border-radius: 22px;
-      padding: 12px;
+      padding: 0;
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
       cursor: pointer;
-      transition: 0.15s;
-      text-align: center;
-    }
-
-    .date-card:hover {
-      transform: scale(1.03);
-    }
-
-    /* 사진 미리보기 정사각형으로 꽉 채우기 */
-    .preview-img {
-      width: 100%;
-      aspect-ratio: 1 / 1;   /* 정사각형 영역 생성 */
-      object-fit: cover;     /* 사진을 가득 채우기 */
-      border-radius: 18px;
-      display: block;
-      margin-bottom: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      position: relative;
     }
 
     /* 날짜 텍스트 */
     .date-text {
       font-size: 18px;
-      font-weight: 700;
-      color: #333;
-      margin-top: 6px;
+      font-weight: 600;
+      color: #444;
+      z-index: 2;
+      position: absolute;
+      bottom: 12px;
+      right: 15px;
     }
 
-    /* 페이지네이션 버튼 */
-    #pagination button {
-      padding: 8px 16px;
-      border-radius: 10px;
-      border: none;
-      background: white;
-      font-size: 15px;
-      margin: 0 6px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.13);
+    /* 미리보기 이미지 스타일 */
+    .preview-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 22px;
     }
   </style>
 </head>
@@ -66,56 +53,64 @@
 
   <div id="date-grid" class="date-grid"></div>
 
-  <div id="pagination" style="text-align:center; margin:25px 0; font-size:16px;"></div>
+  <!-- 페이지네이션 -->
+  <div id="pagination" style="text-align:center; margin-top:20px; font-size:14px;"></div>
 
   <script>
 
     const ITEMS_PER_PAGE = 20;
+
     const params = new URLSearchParams(window.location.search);
     let currentPage = parseInt(params.get("page")) || 1;
 
     fetch('messages.json?v=' + Date.now())
       .then(res => res.json())
       .then(data => {
+        const grid = document.getElementById('date-grid');
 
-        /* 날짜 목록 정리 */
-        let dates = [...new Set(data.map(msg => msg.date))].sort((a, b) => new Date(b) - new Date(a));
+        // 날짜 목록 (중복 제거)
+        let dates = [...new Set(data.map(msg => msg.date))]
+          .sort((a, b) => new Date(b) - new Date(a));
 
         const totalPages = Math.ceil(dates.length / ITEMS_PER_PAGE);
         const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = startIndex + ITEMS_PER_PAGE;
-        const pageDates = dates.slice(startIndex, endIndex);
+        const pageDates = dates.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
-        const grid = document.getElementById('date-grid');
+        // YYYY-MM-DD → 240801 형식 변환
+        function shortDate(dateStr) {
+          return dateStr.replace(/-/g, '').slice(2);
+        }
 
-        /* 날짜별 카드 생성 */
+        // 날짜 카드 생성
         pageDates.forEach(date => {
 
-          const card = document.createElement('div');
-          card.className = 'date-card';
+          // 해당 날짜 메시지 추출
+          const dayMsgs = data.filter(msg => msg.date === date);
 
-          const dayMessages = data.filter(m => m.date === date);
-          const firstImage = dayMessages.find(m => m.image);
+          // JPG만 가져오기
+          const jpgMsg = dayMsgs.find(m => m.image && m.image.toLowerCase().endsWith(".jpg"));
 
-          /* 이미지가 있으면 표시 */
-          if (firstImage) {
-            card.innerHTML = `
-              <img src="${firstImage.image}" class="preview-img">
-              <div class="date-text">${date.replace(/-/g, "").slice(2)}</div>
-            `;
-          } 
-          /* 이미지 없으면 빈 박스 */
-          else {
-            card.innerHTML = `
-              <div class="preview-img" style="background:rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center;">
-                <span style="opacity:0.5;">No image</span>
-              </div>
-              <div class="date-text">${date.replace(/-/g, "").slice(2)}</div>
-            `;
+          // 카드 DOM 생성
+          const card = document.createElement("div");
+          card.className = "date-card";
+
+          // 미리보기 JPG가 있으면 이미지 표시
+          if (jpgMsg) {
+            const img = document.createElement("img");
+            img.src = jpgMsg.image;
+            img.className = "preview-img";
+            card.appendChild(img);
           }
 
+          // 날짜 텍스트
+          const dateText = document.createElement("div");
+          dateText.className = "date-text";
+          dateText.innerText = shortDate(date);
+          card.appendChild(dateText);
+
+          // 클릭 → 날짜 상세보기 이동
           card.onclick = () => {
-            location.href = `date-view.html?date=${date}`;
+            window.location.href = `date-view.html?date=${date}`;
           };
 
           grid.appendChild(card);
@@ -123,23 +118,24 @@
 
         /* 페이지네이션 */
         const pagination = document.getElementById("pagination");
+
         let html = "";
 
         if (currentPage > 1) {
-          html += `<button onclick="goPage(${currentPage - 1})">〈 이전</button>`;
+          html += `<button onclick="goPage(${currentPage - 1})" style="margin-right:10px;">〈 이전</button>`;
         }
 
         html += `<span>${currentPage} / ${totalPages}</span>`;
 
         if (currentPage < totalPages) {
-          html += `<button onclick="goPage(${currentPage + 1})">다음 〉</button>`;
+          html += `<button onclick="goPage(${currentPage + 1})" style="margin-left:10px;">다음 〉</button>`;
         }
 
         pagination.innerHTML = html;
       });
 
     function goPage(page) {
-      location.href = `date.html?page=${page}`;
+      window.location.href = `date.html?page=${page}`;
     }
 
   </script>
