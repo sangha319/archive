@@ -196,7 +196,7 @@ body {
   max-width: 260px;
   border-radius: 16px;
   margin-top: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   display: block;
 }
 
@@ -205,7 +205,7 @@ body {
   width: 120px;
   height: auto;
   border-radius: 12px;
-  margin: 4px 0 10px 0;
+  margin: 2px 0 2px 0;
   display: block;
 }
 
