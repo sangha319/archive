@@ -2625,7 +2625,7 @@
     "id": 435,
     "date": "2024-09-08",
     "time": "오후 6:13",
-    "video": "sangha_video1.mp4"
+    "video": "https://pub-ada9e6f292f9405c98e1d75a975a14d1.r2.dev/sangha_video1.mp4"
   },
   {
     "id": 436,
@@ -2772,7 +2772,7 @@
     "id": 459,
     "date": "2024-09-11",
     "time": "오후 5:22",
-    "video": "sangha_video2.mp4"
+    "video": "https://pub-ada9e6f292f9405c98e1d75a975a14d1.r2.dev/sangha_video2.mp4"
   },
   {
     "id": 460,
@@ -5078,7 +5078,7 @@
   "id": 842,
   "date": "2024-10-07",
   "time": "오후 9:10",
-  "video": "sangha_video3.mp4"
+  "video": "https://pub-ada9e6f292f9405c98e1d75a975a14d1.r2.dev/sangha_video3.mp4"
 },
 {
   "id": 843,
