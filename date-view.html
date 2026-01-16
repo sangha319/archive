@@ -128,7 +128,12 @@
           if (msg.text) {
             const bubble = document.createElement("div");
             bubble.className = "bubble";
-            bubble.innerHTML = msg.text.replace(/\n/g, "<br>");
+            if (isReplyMessage(msg.text)) {
+  bubble.innerHTML = createReplyBubble(msg.text);
+} else {
+  bubble.innerHTML = msg.text.replace(/\n/g, "<br>");
+}
+
 
             if (msg.text.length <= 25) {
               bubble.classList.add("single-line");
