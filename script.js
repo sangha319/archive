@@ -79,3 +79,34 @@ if (prevBtn) {
 if (nextBtn) {
   nextBtn.onclick = () => goToPage(currentPage + 1);
 }
+// ===========================
+// 답장 메시지 판별
+// ===========================
+function isReplyMessage(text) {
+  return text && text.startsWith("SANGHA님의 답장");
+}
+
+// ===========================
+// 답장 말풍선 HTML 생성
+// ===========================
+function createReplyBubble(text) {
+  const lines = text.split("\n").filter(Boolean);
+
+  // 예시 구조
+  // SANGHA님의 답장
+  // 너도 마라반 먹어봤어 ?
+  // ↳ 먹어봤뜸!
+
+  const original = lines[1] || "";
+  const replyLine = lines.find(line => line.startsWith("↳"));
+  const reply = replyLine ? replyLine.replace("↳", "").trim() : "";
+
+  return `
+    <div class="reply-box">
+      <div class="reply-header">SANGHA님의 답장</div>
+      <div class="reply-origin">${original}</div>
+      <div class="reply-message">${reply}</div>
+    </div>
+  `;
+}
+
